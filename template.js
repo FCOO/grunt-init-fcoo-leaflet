@@ -7,7 +7,7 @@
 'use strict';
 
 // Basic template description.
-exports.description = 'Create a FCOO repository with a jQuery plugin, including SCSS (and CSS).';
+exports.description = 'Create a FCOO repository with a leaflet plugin, including SCSS (and CSS).';
 
 // Template-specific notes to be displayed before question prompts.
 exports.notes = 'Please enter following information:';
