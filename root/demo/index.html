@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="da" style="font-size: 100%">
+<head>
+	<title>fcoo.dk - {%= name%} - Example</title>
+	<meta charset="iso-8859-1" />
+	<meta charset="iso-8859-1" /> <!-- OR "utf-8" -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv='x-dns-prefetch-control' content='on'><!-- Hvorfor "on"? -->
+
+<!-- <meta http-equiv="refresh" content="30"> -->
+<!-- <meta name='description' content='150 words'> -->
+<!-- <meta name='subject' content='your website's subject'> -->
+<!-- <meta http-equiv='Expires' content='0'> -->
+	<meta name='copyright' content='FCOO'>
+	<meta name='owner' content='FCOO'>
+
+  <link  href="bower_components.css" rel="stylesheet">	
+  <link  href="../src/{%= name%}.css" rel="stylesheet">	
+</head>
+
+<body>
+	<div id="map" style="width: 800px; height: 600px"></div>
+
+
+	
+	
+	<script src="bower_components.js"></script>
+	<script src="../src/{%= name%}.js"></script>
+	<script>
+		var map = L.map('map').setView([51.505, -0.09], 13);
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ', {
+			maxZoom: 18,
+			attribution: '{%= name%} - Example',
+/*			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>',*/
+			id: 'mapbox.streets'
+		}).addTo(map);
+
+
+		var my{%= class_name %} = new L.{%= class_name %}( /*options*/ );
+		my{%= class_name %}.addTo(map);
+
+	</script>
+</body>
+</html>

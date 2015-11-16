@@ -8,7 +8,7 @@
 ## Installation
 See [fcoo-web-dev on GitHub][fcoo-web-dev] on how to install [grunt-init] and the other packages needed.
 
-Once grunt-init is installed, place this template in your `~/.grunt-init/` directory. 
+Once [grunt-init] is installed, place this template in your `~/.grunt-init/` directory. 
 
 It's recommended that you use git to clone this template into that directory, as follows:
 
