@@ -7,7 +7,7 @@
 	https://github.com/FCOO
 
 ****************************************************************************/
-;(function (L, window, document, undefined) {
+;(function (/*$, */L, window, document, undefined) {
 	"use strict";
 
 	//Extend base leaflet class
@@ -40,9 +40,12 @@
 		//onAdd
 		onAdd: function (map) {
 			this._map = map;
+			var result = L.Control.Box.prototype.onAdd.call(this, map );
 			
 			//Create the object/control
-			
+                                                                                       
+
+			return result;
 		},
 
 		//myMethod
@@ -51,7 +54,7 @@
 		}
 	});
 
-}(L, this, document));
+}(/*jQuery, */L, this, document));
 
 
 
