@@ -1,3 +1,4 @@
+
 module.exports = function(grunt) {
 
 	"use strict";
@@ -31,7 +32,6 @@ module.exports = function(grunt) {
 	//*******************************************************
 	var today						= grunt.template.today("yyyy-mm-dd-HH-MM-ss"),
 			todayStr				= grunt.template.today("dd-mmm-yyyy HH:MM"),
-			//pkg						= grunt.file.readJSON('package.json'),
 			bwr							= grunt.file.readJSON('bower.json'),
 			currentVersion	= bwr.version,
 			name						= bwr.name,
@@ -96,17 +96,18 @@ module.exports = function(grunt) {
 		}
 	}
 
-	
 	var src_to_src_files				= { expand: true,	cwd: 'src',				dest: 'src'				},	//src/**/*.* => src/**/*.*
 			temp_to_temp_files			= { expand: true,	cwd: 'temp',			dest: 'temp'			},	//temp/**/*.* => temp/**/*.*
 			temp_to_temp_dist_files	=	{ expand: true,	cwd: 'temp',			dest: 'temp_dist'	},	//temp/**/*.* => temp_dist/**/*.*
+			temp_to_src_files				=	{ expand: true,	cwd: 'src',				dest: 'temp'			},	//src/**/*.* => temp/**/*.*
+
 //			temp_dist_to_dist_files	=	{ expand: true,	cwd: 'temp_dist',	dest: 'dist'			},	//temp_dist/**/*.* => dist/**/*.*
 
 
 			sass_to_css_files = {	src: srcExclude_('**/*.scss'), ext: '.css'	}, //*.scss => *.css
 
 			src_sass_to_src_css_files		= merge( src_to_src_files,		sass_to_css_files ), //src/*.scss => src/*.css
-			temp_sass_to_temp_css_files	= merge( temp_to_temp_files,	sass_to_css_files	), //temp/*.scss => temp/*.css
+			temp_sass_to_temp_css_files	= merge( temp_to_src_files,	sass_to_css_files	), //temp/*.scss => temp/*.css
 
 			bower_concat_options	= readFile('bower_main.json', true, {}),
 			jshint_options				= readFile('.jshintrc', true, {}),			
@@ -114,13 +115,16 @@ module.exports = function(grunt) {
 			title = 'fcoo.dk - ' + name,
 
 			head_contents = '',
-			body_contents = '';
+			body_contents = '',
+				
+			link_js		= '',
+			link_css	= '';
 
 			
 	if (isApplication){
 		//Read the contents for the <HEAD>..</HEAD> and <BODY</BODY>
 		head_contents = readFile('src/head.html', false, '');
-		body_contents = readFile('src/body.html', false, '<body>BODY IS MISSING</body>');
+		body_contents = readFile('src/body.html', false, 'BODY IS MISSING');
 	}			
 
 	//***********************************************
@@ -153,12 +157,13 @@ module.exports = function(grunt) {
 			temp_images_to_temp_dist: merge( temp_to_temp_dist_files,  { flatten: true, src: srcExclude_(['**/images/*.*']),	dest: 'temp_dist/images'	} ),	
 			temp_fonts_to_temp_dist	:	merge( temp_to_temp_dist_files,  { flatten: true, src: srcExclude_(['**/fonts/*.*']),		dest: 'temp_dist/fonts'}	),
 
-			temp_dist_to_dist: { expand: true, cwd: 'temp_dist', src: ['**/*.*'], dest: 'dist' },
-			temp_dist_to_demo: { expand: true, cwd: 'temp_dist', src: ['**/*.*'], dest: 'demo' },
+			temp_dist_to_dist	: { expand: true, cwd: 'temp_dist', src: ['**/*.*'], dest: 'dist' },
+			temp_dist_to_dev	: { expand: true, cwd: 'temp_dist', src: ['**/*.*'], dest: 'dev'	},
+			temp_dist_to_demo	: { expand: true, cwd: 'temp_dist', src: ['**/*.*'], dest: 'demo' },
 
 
-			//Copies alle files in src to temp, incl '_*.*' but NOT *.min.js/css
-			src_to_temp							: { expand: true,		filter: 'isFile',	cwd: 'src/',				src: ['**/*.*', '!**/*.min.js', '!**/*.min.css'],	dest: 'temp'	},
+			//Copies alle files in src to temp, excl. '_*.*' and *.min.js/css
+			src_to_temp							: { expand: true,		filter: 'isFile',	cwd: 'src/',				src: srcExclude_(['**/*.*', '!**/*.min.js', '!**/*.min.css']),	dest: 'temp'	},
 			
 			//Copy all *.js and *.css from temp_dist to dist
 			temp_dist_jscss_to_dist	: { expand: false,	filter: 'isFile',	cwd: 'temp_dist/',	src: ['*.js', '*.css'],	dest: 'dist'	},
@@ -167,6 +172,8 @@ module.exports = function(grunt) {
 			src_indexhtml_to_dist			: { expand: false,	filter: 'isFile',	cwd: '',	src: ['src/index_TEMPLATE.html'],	dest: 'dist/index.html'	},
 			src_indexhtml_to_dist_dev	: { expand: false,	filter: 'isFile',	cwd: '',	src: ['src/index_TEMPLATE.html'],	dest: 'dist/index-dev.html'	},
 
+			//Copy src/index_TEMPLATE-DEV.html to dev/index.html
+			src_indexhtml_to_dev			: { expand: false,	filter: 'isFile',	cwd: '',	src: ['src/index_TEMPLATE-DEV.html'],	dest: 'dev/index.html'	},
 		},
 		
 		//** rename **	
@@ -210,7 +217,7 @@ module.exports = function(grunt) {
 				},	
 				files: [src_sass_to_src_css_files],
 		  },
-			//build: Generate 'normal' css-files in /temp
+			//build: Generate 'normal' css-files in same folder as scss-files
 			build: {
 				options: {
 					debugInfo		: false,
@@ -288,8 +295,6 @@ module.exports = function(grunt) {
 					{from: '{TITLE}',							to: title									},
 					{from: '{HEAD}',							to: head_contents					},
 					{from: '{BODY}',							to: body_contents					},
-//					{from: '{CSS_FILE_NAME}',			to: name_today+'.min.css'	},
-//					{from: '{JS_FILE_NAME}',			to: name_today+'.min.js'	}
 				]
 		  },
 		  'dist_indexhtml_jscss': {
@@ -306,6 +311,18 @@ module.exports = function(grunt) {
 				replacements: [
 					{from: '{CSS_FILE_NAME}',	to: name_today+'.css'	},
 					{from: '{JS_FILE_NAME}',	to: name_today+'.js'	}
+				]
+		  },
+		  'dev_indexhtml_metalink': {
+				src					: ['dev/index.html'],
+		    overwrite		: true,
+				replacements: [
+					{from: '{APPLICATION_NAME}',	to: bwr.name			},
+					{from: '{TITLE}',							to: title					},
+					{from: '{HEAD}',							to: head_contents	},
+					{from: '{BODY}',							to: body_contents	},
+					{from: '{LINK_CSS}',					to: function(){return link_css;} },
+					{from: '{LINK_JS}',						to: function(){return link_js; } }
 				]
 		  },
 
@@ -375,7 +392,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-exec');
 
 	grunt.loadNpmTasks('grunt-prompt');
-
 
 	//*********************************************************
 	//CREATE THE "DEFAULT" TAST
@@ -476,7 +492,7 @@ module.exports = function(grunt) {
 			bwr.version = newVersion;
 		} 
 		else 
-			commitMessage = '-m "' + (promptMessage || '* No message *') +'"';
+			commitMessage = ' -m "' + (promptMessage || '* No message *') +'"';
 
 		//Build application/packages
 		if (grunt.config('build')){
@@ -496,10 +512,7 @@ module.exports = function(grunt) {
 				grunt.log.writeln(file+'-OK');
 			}
 
-//		} 
-
-		//Replace {VERSION] with newVersion in all js or html files in dist
-//		if (newVersion){
+			//Replace {VERSION] with newVersion in all js or html files in dist
 			runCmd('grunt replace:'+(isApplication ? 'dist_html_version' : 'dist_js_version') );
 		}
 
@@ -539,6 +552,54 @@ module.exports = function(grunt) {
 	//*********************************************************
 	//CREATE THE "DEV" AND "PROD" TAST
 	//*********************************************************
+
+	//First create the task _create_dev_links
+	grunt.registerTask('_create_dev_links', function(){
+		function findFiles(ext){
+			//Find all files in src with .ext but excl. .min.ext
+			return grunt.file.expand( srcExclude_(['src/**/*.' + ext, '!src/**/*.min.' + ext]) );
+		}
+
+		//Find all js-files
+		writelnYellow('Including all js-files');
+		var jsFiles = findFiles('js'),
+				jsFile;
+		link_js = '';
+		for (var i=0; i<jsFiles.length; i++ ){
+			jsFile = jsFiles[i];
+			grunt.log.writeln(jsFile);
+			link_js += '  <script src="../'+jsFile+'"></script>\n';
+		}
+
+
+		//Find all css-files
+		writelnYellow('Including all css-files');
+		link_css	= '';
+
+		//To ensure that all furture css-files are included, all scss-files are included as css-file.
+		var scssFiles = findFiles('scss');
+		for (var i=0; i<scssFiles.length; i++ )
+			scssFiles[i] = scssFiles[i].replace(".scss", ".css");
+		
+		var cssFiles = findFiles('css');
+
+		//concat cssFiles and scssFilesand remove duplicate items
+		cssFiles.concat(scssFiles);
+		for(var i=0; i<cssFiles.length; ++i) 
+			for(var j=i+1; j<cssFiles.length; ++j)
+				if(cssFiles[i] === cssFiles[j])
+					cssFiles.splice(j--, 1);
+
+		var cssFile;
+		for (var i=0; i<cssFiles.length; i++ ){
+			cssFile = cssFiles[i];
+			grunt.log.writeln(cssFile);
+			link_css += '  <link  href="../'+cssFile+'" rel="stylesheet">\n';
+		}
+	});	
+	//********************************************************************
+
+	
 	var tasks				= [],
 			isProdTasks = true,
 			isDevTasks;
@@ -599,7 +660,7 @@ module.exports = function(grunt) {
 		}
 
 
-		//MODIFY (RENAME AND/OR MOVE) FILES IN TEMP_DIST BEFORE THEY ARE MOVED TO DIST
+		//MODIFY (RENAME AND/OR MOVE) FILES IN DEV OR IN TEMP_DIST BEFORE THEY ARE MOVED TO DIST
 		if (isApplication && isProdTasks){
 			//Concat js/css files to APPLICATIONNAME_TODAY[.min].js/css in DIST and delete from test_dist
 			tasks.push(
@@ -618,6 +679,15 @@ module.exports = function(grunt) {
 			 );
 		}
 
+		if (isApplication && isDevTasks){
+			//Copy src/index_TEMPLATE-DEV.html to \dev and insert meta-data AND create links for all js- and css-files in src
+			tasks.push(
+				'copy:src_indexhtml_to_dev',	//Copy index_TEMPLATE-DEV.html from src => dev/index.html
+				'_create_dev_links',			
+				'replace:dev_indexhtml_metalink' //Insert meta-data and <link...> in dev/index.html
+			);
+		}
+
 		if (isPackage && isProdTasks){
 			//Rename all src.* to "name".* 
 			tasks.push('rename:srcjs_to_namejs');
@@ -634,7 +704,7 @@ module.exports = function(grunt) {
 		}
 
 		if (isApplication && isDevTasks){
-		  //TODO - 
+			tasks.push( 'copy:temp_dist_to_dev' );	//Copy all files from temp_dist to dev
 		}
 
 		tasks.push( 'clean:temp_dist');
