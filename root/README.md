@@ -17,21 +17,10 @@ http://FCOO.github.io/{%= name %}/demo/
 
 
 ### options
-<table>
-<tr>
-<th>Id</th>
-<th>Type</th> 
-<th>Default</th>
-<th>Description</th>
-</tr>
-
-<tr>
-<td>options1</td>
-<td>boolean</td>
-<td>true</td>
-<td>If <code>true</code> the ...</td>
-</tr>
-</table>
+| Id | Type | Default | Description |
+| :--: | :--: | :-----: | --- |
+| options1 | boolean | true | If <code>true</code> the ... |
+| options2 | string | null | Contain the ... |
 
 ### Methods
 
