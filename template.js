@@ -14,14 +14,14 @@ exports.notes = 'Please enter following information:';
 
 
 // Template-specific notes to be displayed after question prompts.
-exports.after = 
+exports.after =
 	'*******************************************\n' +
-	'You should now run the following commands\n' +
-	'>bower update\n' +
-	'>npm install\n' +
+	'FINISH :-)\n' +
+	'>You can now use the following cmd\n' +
+	'>grunt check\n' +
 	'>grunt dev\n' +
-	'or >bower update & npm install & grunt dev (on Windows)\n' +
-	'or >bower update ; npm install ; grunt dev (on Linux)\n' +
+	'>grunt prod\n' +
+	'>grunt github\n' +
 	'*******************************************\n' +
 	'';
 
@@ -31,7 +31,7 @@ exports.warnOn = '*';
 // The actual init template.
 exports.template = function(grunt, init, done) {
   init.process({type: 'jquery'}, [
-	
+
 		init.prompt('name'),
 
 		{
@@ -47,7 +47,7 @@ exports.template = function(grunt, init, done) {
 				className = className.replace(/ /g, '');
 				done(null, className);
 			},
-			validator: /([A-Z])\w+/, 
+			validator: /([A-Z])\w+/,
 			warning: 'Only letters. Must start with a upper case letter ("MyClass" not "myClass")'
 		},
 
@@ -64,12 +64,11 @@ exports.template = function(grunt, init, done) {
 
   ], function(err, props) {
 
-
 		//Add default values
 		props.licenses = ['MIT'];
 		props.year = (new Date()).getFullYear();
 
-		props.jquery_class_name = props.class_name; 
+		props.jquery_class_name = props.class_name;
 		props.jquery_class_name = props.jquery_class_name.substring(0, 1).toLowerCase() + props.jquery_class_name.substring(1); //myClass => MyClass
 
     // Files to copy (and process).
@@ -84,12 +83,25 @@ exports.template = function(grunt, init, done) {
 		//Copy gruntfile.js and package.json from gruntfile/ to root
 		var src_path = init.srcpath( '/../gruntfile/' );
 		init.copyAndProcess({
-		  "package.json": src_path + "package.json", 
-		  "gruntfile.js": src_path + "gruntfile.js" 
+		  "package.json": src_path + "package.json",
+		  "gruntfile.js": src_path + "gruntfile.js"
 		}, props );
 
-    // All done!
-    done();
+    // Run npm install in project's directory
+    grunt.util.spawn(
+			{	cmd: "npm",	args: ["install"],	opts: {cwd: init.destpath, stdio: "inherit"}	},
+      function(error, result, code) {
+				// Run npm install in project's directory
+		    grunt.util.spawn(
+					{	cmd: "bower",	args: ["update"],	opts: {cwd: init.destpath, stdio: "inherit"}	},
+					function(error, result, code) { done(); }
+				);
+      }
+		);
+
+
+
+
 	});
 
 };
