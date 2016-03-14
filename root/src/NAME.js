@@ -7,7 +7,7 @@
 	https://github.com/FCOO
 
 ****************************************************************************/
-;(function (/*$, */L, window, document, undefined) {
+;(function ($, L, window, document, undefined) {
 	"use strict";
 
 	//Extend base leaflet class
@@ -16,11 +16,11 @@
 
 	//or extend eq. L.Control
 	//L.Control.{%= class_name %} = L.Control.extend({
-		
-    //Default options	
+
+    //Default options
 		options: {
 			VERSION: "{VERSION}"
-		
+
 		},
 
 		//initialize
@@ -41,9 +41,9 @@
 		onAdd: function (map) {
 			this._map = map;
 			var result = L.Control.Box.prototype.onAdd.call(this, map );
-			
+
 			//Create the object/control
-                                                                                       
+
 
 			return result;
 		},
@@ -54,7 +54,25 @@
 		}
 	});
 
-}(/*jQuery, */L, this, document));
+	//OR/AND extend a prototype-method (METHOD) of a leaflet {CLASS}
+
+	/***********************************************************
+	Extend the L.{CLASS}.{METHOD} to do something more
+	***********************************************************/
+	L.{CLASS}.prototype.{METHOD} = function ({METHOD}) {
+		return function () {
+    //Original function/method
+    {METHOD}.apply(this, arguments);
+
+    //New extended code
+    ......extra code
+
+		}
+	} (L.{CLASS}.prototype.{METHOD});
+
+
+
+}(jQuery, L, this, document));
 
 
 
