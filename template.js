@@ -107,7 +107,7 @@ exports.template = function(grunt, init, done) {
 					props.licenses = ['MIT'];
 					props.year = (new Date()).getFullYear();
 
-					props.is_application = 'true';
+					props.is_application = 'false';
 					props.have_ghpages = 'true';
 
 					props.jquery_class_name = props.class_name;
