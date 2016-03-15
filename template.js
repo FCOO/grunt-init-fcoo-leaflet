@@ -107,6 +107,9 @@ exports.template = function(grunt, init, done) {
 					props.licenses = ['MIT'];
 					props.year = (new Date()).getFullYear();
 
+					props.is_application = 'true';
+					props.have_ghpages = 'true';
+
 					props.jquery_class_name = props.class_name;
 					props.jquery_class_name = props.jquery_class_name.substring(0, 1).toLowerCase() + props.jquery_class_name.substring(1); //myClass => MyClass
 
