@@ -20,8 +20,9 @@ exports.after =
 	'>You can now use the following cmd\n' +
 	'>grunt check\n' +
 	'>grunt dev\n' +
-	'>grunt prod\n' +
-	'>grunt github\n' +
+	'>grunt build\n' +
+	'>grunt push\n' +
+	'>grunt push-cli\n' +
 	'*******************************************\n' +
 	'';
 
@@ -56,7 +57,7 @@ exports.template = function(grunt, init, done) {
 			}
 		}
 	}
-	
+
 	var deleteList = ['temp', 'node_modules', 'bower_components', '.ORIGINAL'];
 	for (var i=0; i<deleteList.length; i++ )
 		if (grunt.file.isDir( deleteList[i] ))
@@ -68,13 +69,13 @@ exports.template = function(grunt, init, done) {
 
 	// Clone github/fcoo/gruntfile.js into /temp
 	grunt.util.spawn(
-		{cmd: "git", args: ["clone", "https://github.com/fcoo/gruntfile.js", "./temp"], 
-	  opts: {cwd: init.destpath, stdio: "inherit"}}, 
+		{cmd: "git", args: ["clone", "https://github.com/fcoo/fcoo-gruntfile.js", "./temp"],
+	  opts: {cwd: init.destpath, stdio: "inherit"}},
 		function(error, result, code) {
-			grunt.log.writeln('\nPlease enter following information:');	
+			grunt.log.writeln('\nPlease enter following information:');
 			init.process(
-				{type: 'jquery'}, 
-				[	
+				{type: 'jquery'},
+				[
 					init.prompt('name'),
 
 					{	name: 'class_name',
@@ -100,8 +101,8 @@ exports.template = function(grunt, init, done) {
 					init.prompt('author_name'),
 
 					init.prompt('author_email'),
-				], 
-				
+				],
+
 				function(err, props) {
 					//Add default values
 					props.licenses = ['MIT'];
@@ -119,8 +120,8 @@ exports.template = function(grunt, init, done) {
 			    // Add properly-named license files.
 					init.addLicenseFiles(files, props.licenses);
 
-					//Add gruntfile.js and gruntfile_setup.json and package.json from gruntfile/ to files
-					var fileList = ['gruntfile.js', 'gruntfile_setup.json', 'package.json'];
+					//Add gruntfile.js and package.json from fcoo-gruntfile.js to files
+					var fileList = ['gruntfile.js', 'package.json'];
 					for (var i=0; i<fileList.length; i++ )
 						files[ fileList[i] ] = init.destpath() + '\\temp\\' + fileList[i];
 
