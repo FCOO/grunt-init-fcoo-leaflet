@@ -7,8 +7,8 @@
   ],
   "description": "{%= description %}",
   "main": [
-    "dist/{%= name %}.min.js",
-    "dist/{%= name %}.min.css"
+    "dist/{%= name %}.js",
+    "dist/{%= name %}.css"
   ],
 	"repository": {
 		"type": "git",

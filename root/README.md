@@ -32,7 +32,7 @@ http://FCOO.github.io/{%= name %}/demo/
 ## Copyright and License
 This plugin is licensed under the [MIT license](https://github.com/FCOO/{%= name %}/LICENSE).
 
-Copyright (c) 2015 [FCOO](https://github.com/FCOO)
+Copyright (c) {%= year %} [FCOO](https://github.com/FCOO)
 
 ## Contact information
 
@@ -40,13 +40,3 @@ Copyright (c) 2015 [FCOO](https://github.com/FCOO)
 
 
 ## Credits and acknowledgements
-
-
-## Known bugs
-
-## Troubleshooting
-
-## Changelog
-
-
-

@@ -120,8 +120,10 @@ exports.template = function(grunt, init, done) {
 			    // Add properly-named license files.
 					init.addLicenseFiles(files, props.licenses);
 
-					//Add gruntfile.js and package.json from fcoo-gruntfile.js to files
-					var fileList = ['gruntfile.js', 'package.json'];
+//					//Add gruntfile.js and package.json from fcoo-gruntfile.js to files
+//					var fileList = ['gruntfile.js', 'package.json'];
+					//Add package.json and all .*rc from fcoo-gruntfile.js to files
+					var fileList = ['package.json', '.browserslistrc', '.eslintrc', '.uglifyrc'];
 					for (var i=0; i<fileList.length; i++ )
 						files[ fileList[i] ] = init.destpath() + '\\temp\\' + fileList[i];
 
