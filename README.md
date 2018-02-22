@@ -13,12 +13,12 @@ Once [grunt-init] is installed, place this template in your `~/.grunt-init/` dir
 It's recommended that you use git to clone this template into that directory, as follows:
 
 ```
-git clone https://github.com/fcoo/grunt-init-fcoo-leaflet.git ~/.grunt-init/fcoo-leaflet
+git clone https://github.com/fcoo/grunt-init-fcoo-leaflet.git ~/.grunt-init/grunt-init-fcoo-leaflet
 ```
 
 On windows use
 ```
-git clone https://github.com/fcoo/grunt-init-fcoo-leaflet.git "%USERPROFILE%/.grunt-init/fcoo-leaflet"
+git clone https://github.com/fcoo/grunt-init-fcoo-leaflet.git "%USERPROFILE%/.grunt-init/grunt-init-fcoo-leaflet"
 ```
 or see [the documentation][grunt-init] for the correct destination directory path
 
