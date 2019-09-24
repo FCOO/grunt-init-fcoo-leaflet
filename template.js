@@ -120,16 +120,14 @@ exports.template = function(grunt, init, done) {
                     props.jquery_class_name = props.class_name;
                     props.jquery_class_name = props.jquery_class_name.substring(0, 1).toLowerCase() + props.jquery_class_name.substring(1); //myClass => MyClass
 
-                // Files to copy (and process).
+                    //Files to copy (and process).
                     var files = init.filesToCopy(props);
 
-                // Add properly-named license files.
+                    //Add properly-named license files.
                     init.addLicenseFiles(files, props.licenses);
 
-//                  //Add gruntfile.js and package.json from fcoo-gruntfile.js to files
-//                  var fileList = ['gruntfile.js', 'package.json'];
                     //Add package.json and all .*rc from fcoo-gruntfile.js to files
-                    var fileList = ['package.json', '.browserslistrc', '.eslintrc', '.uglifyrc'];
+                    var fileList = ['package.json', '.browserslistrc', '.eslintrc', '.uglifyrc', '.yarnrc', '.bowerrc', '.gitignore'];
                     for (var i=0; i<fileList.length; i++ )
                         files[ fileList[i] ] = init.destpath() + '\\temp\\' + fileList[i];
 
