@@ -8,7 +8,7 @@
 ## Installation
 See [fcoo-web-dev on GitHub][fcoo-web-dev] on how to install [grunt-init] and the other packages needed.
 
-Once [grunt-init] is installed, place this template in your `~/.grunt-init/` directory. 
+Once [grunt-init] is installed, place this template in your `~/.grunt-init/` directory.
 
 It's recommended that you use git to clone this template into that directory, as follows:
 
@@ -16,16 +16,16 @@ It's recommended that you use git to clone this template into that directory, as
 git clone https://github.com/fcoo/grunt-init-fcoo-leaflet.git ~/.grunt-init/grunt-init-fcoo-leaflet
 ```
 
-On windows use
+On Windows (PowerShell) use
 ```
-git clone https://github.com/fcoo/grunt-init-fcoo-leaflet.git "%USERPROFILE%/.grunt-init/grunt-init-fcoo-leaflet"
+git clone https://github.com/fcoo/grunt-init-fcoo-leaflet.git "$env:USERPROFILE/.grunt-init/grunt-init-fcoo-leaflet"
 ```
 or see [the documentation][grunt-init] for the correct destination directory path
 
 ## Usage
 
 1.	Create the new repository in [GitHub/FCOO](https://github.com/FCOO)
-2.	Clone the new repository to your computer/Desktop 
+2.	Clone the new repository to your computer/Desktop
 3.	Open a command-prompt and go to the directory with the new repository
 4.	Run the command below and follow the prompts
 
@@ -35,4 +35,4 @@ grunt-init fcoo-leaflet
 
 If you want to see a list of installed templates, run the command `grunt-init`
 
-Note that this template will generate files in the current directory, but any files and directories will be saved in a directory named `.ORIGINAL`. 
+Note that this template will generate files in the current directory, but any files and directories will be saved in a directory named `.ORIGINAL`.
