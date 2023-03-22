@@ -17,7 +17,7 @@
 
 	"dependencies": {
 		"jquery": "latest",
-    "leaflet-bower": "latest"
+		"leaflet-bower": "fcoo/leaflet-bower#latest"
 	},
 
 	"devDependencies": {
